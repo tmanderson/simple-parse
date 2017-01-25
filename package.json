@@ -9,13 +9,14 @@
   "scripts": {
     "predocs": "rm -rf ./docs && mkdir docs",
     "docs:gen": "jsdoc -c ./.jsdocrc -d ./docs ./src/*.js",
-    "docs": "npm run predocs && npm run docs:gen",
+    "docs": "npm run predocs && npm run docs:gen && open ./docs/index.html",
     "build:babel": "babel -o ./dist/simple-parse.tmp.js ./src",
-    "build:browser": "browserify -e ./src/index.js -o ./dist/simple-parse.js -t [ babelify --presets [latest] ]",
+    "build:browser": "browserify -s SimpleParse -e ./src/index.js -o ./dist/simple-parse.js -t [ babelify --presets [latest] ]",
     "build:uglify": "uglifyjs ./dist/simple-parse.js > ./dist/simple-parse.min.js",
     "build": "npm run build:browser && npm run build:uglify && npm run postbuild",
     "prebuild": "rm -rf ./dist && mkdir ./dist",
-    "postbuild": "rm -rf ./dist/simple-parse.tmp.js"
+    "postbuild": "rm -rf ./dist/simple-parse.tmp.js",
+    "example": "php -S localhost:8080"
   },
   "author": "Mitch Anderson",
   "license": "ISC",

@@ -1,4 +1,4 @@
-import Pattern from './Parser'
-import Token from './Token'
+import Parser from './Parser';
+import Token from './Token';
 
-export { Pattern, Token };
+export { Parser, Token };

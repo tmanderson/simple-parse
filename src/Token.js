@@ -1,8 +1,8 @@
 /**
  * @class Token
  */
-class Token {
-  get underMax() { return this.max > 0 && this.captured.length <= this.max || true; }
+export default class Token {
+  get underMax() { return this.max > 0 && this.captured.length <= this.max || this.max === -1; }
   get overMin() { return this.captured.length >= this.min }
   get matched() { return this.overMin && this.underMax; }
 

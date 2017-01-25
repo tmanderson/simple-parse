@@ -1,15 +1,32 @@
 # Simple-Parse
 A simple psuedo-[parser combinator](https://www.wikiwand.com/en/Parser_combinator) implementation.
 
+### Documentation
+```
+$> npm run docs
+```
+
 ### Example
 ```javascript
-let word, whitespace, words, sentence;
+const Parser = SimpleParse.Parser;
+// Defines a parser for simple JavaScript-like function signatures
+// (ie `function(arg, argument)`, no function body)
 
-word = new Token('[a-z]'); // matches letters a-z
-whitespace = new Token(' ', false) // do not capture the match
-words = new Pattern(word, whitespace) // matches word, followed by a space
+const parser = new Parser(
+  '[a-z0-9]',
+  [
+    '\\(',
+    [
+      '[a-z0-9]',
+      [',', 0, false], // match a comma 0 or more times, do not capture
+      [' ', 0, false], // match a space 0 or more times, do not capture
+      1,
+      2 // limit to 2 matches of this set (the arguments)
+    ],
+    '\\)' // match a closing parenthesis one or more times
+  ]
+);
 
-sentence = new Pattern(words, Token('.')) // words followed by a `.`
+parser.feed('test(one, two); another(three, four, five)') => ["test", ["(", ["one", "two"], ")"]]
 
-sentence.feed('this is a sentence.') => ['this', 'is', 'a', 'sentence']
 ```
