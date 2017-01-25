@@ -1,0 +1,19 @@
+{
+  "plugins": [
+    "transform-class-constructor-call",
+    "transform-class-properties",
+    "transform-decorators",
+    "transform-object-rest-spread",
+    "transform-object-assign",
+    "transform-regenerator",
+    "transform-runtime",
+    "syntax-async-generators",
+    "syntax-class-properties",
+    "syntax-decorators",
+    "syntax-object-rest-spread",
+    "syntax-async-functions"
+  ],
+  "presets": [
+    "latest",
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "simple-parser",
+  "version": "0.1.0",
+  "description": "a psuedo-parser combinator",
+  "main": "dist/simple-parse.js",
+  "engines": {
+    "node": "^7.0.x"
+  },
+  "scripts": {
+    "predocs": "rm -rf ./docs && mkdir docs",
+    "docs:gen": "jsdoc -c ./.jsdocrc -d ./docs ./src/*.js",
+    "docs": "npm run predocs && npm run docs:gen",
+    "build:babel": "babel -o ./dist/simple-parse.tmp.js ./src",
+    "build:browser": "browserify -e ./src/index.js -o ./dist/simple-parse.js -t [ babelify --presets [latest] ]",
+    "build:uglify": "uglifyjs ./dist/simple-parse.js > ./dist/simple-parse.min.js",
+    "build": "npm run build:browser && npm run build:uglify && npm run postbuild",
+    "prebuild": "rm -rf ./dist && mkdir ./dist",
+    "postbuild": "rm -rf ./dist/simple-parse.tmp.js"
+  },
+  "author": "Mitch Anderson",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-syntax-async-generators": "^6.13.0",
+    "babel-plugin-syntax-class-properties": "^6.13.0",
+    "babel-plugin-syntax-decorators": "^6.13.0",
+    "babel-plugin-syntax-object-rest-spread": "^6.13.0",
+    "babel-plugin-transform-class-constructor-call": "^6.8.0",
+    "babel-plugin-transform-class-properties": "^6.11.5",
+    "babel-plugin-transform-decorators": "^6.13.0",
+    "babel-plugin-transform-object-assign": "^6.8.0",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-plugin-transform-regenerator": "^6.14.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2016": "^6.11.3",
+    "babel-preset-es2017": "^6.14.0",
+    "babel-preset-latest": "^6.14.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.13.1",
+    "eslint-plugin-import": "^2.2.0",
+    "jsdoc": "^3.4.3",
+    "uglifyjs": "^2.4.10"
+  }
+}
