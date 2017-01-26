@@ -10,6 +10,7 @@ export default class Token {
   get underMax() { return this.max > 0 && this.captured.length <= this.max || this.max === -1; }
   get overMin() { return this.captured.length >= this.min }
   get matched() { return this.overMin && this.underMax; }
+  get optional() { return this.min === 0; }
 
   /**
    * Creates a token instance
@@ -45,7 +46,10 @@ export default class Token {
    */
   match(char) {
     const matched = this.re.test(char);
-    if(matched) this.captured += char;
+    const captured = this.captured + char;
+    if(matched && this.max < 0 || captured.length <= this.max) {
+      this.captured += char;
+    }
     return matched;
   }
 }

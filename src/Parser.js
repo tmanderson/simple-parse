@@ -5,6 +5,7 @@
 import Token from './Token'
 
 function isString(str) { return typeof str === 'string'; }
+function isFunction(str) { return typeof str === 'function'; }
 function isNumber(num) { return typeof num === 'number'; }
 function isArray(arr) { return arr instanceof Array; }
 
@@ -12,6 +13,7 @@ function isArray(arr) { return arr instanceof Array; }
  * Class Parser
  */
 export default class Parser {
+  static self = Symbol('this')
   /**
    * Get the current token
    * @return {Token} - the active token
@@ -86,10 +88,8 @@ export default class Parser {
    * @return {Array.<string,Array.<string>>} The full match of this pattern
    */
   flush() {
-    const captured = this.captured;
-
-    if(this.matched) captured.push(...[].concat(...this.flushTokens()));
-
+    let captured = [];
+    if(this.matched) captured = this.captured.concat(...this.flushTokens());
     this.token_index = 0;
     this.captured = [];
     return captured;
@@ -101,7 +101,9 @@ export default class Parser {
    */
   flushTokens(empty=true) {
     // filter any `''` values, values that had a `min` match of 0
-    return this.tokens.map(t => t.flush(empty)).filter(v => !!v);
+    return this.tokens
+      .map(t => t.flush(empty))
+      .filter(v => v && v.length);
   }
 
   /**
@@ -133,6 +135,9 @@ export default class Parser {
         this.next();
         return this.match(char);
       }
+      else if(!this.matched) {
+        this.reset();
+      }
 
       return false;
     }
@@ -146,14 +151,14 @@ export default class Parser {
    * @return {Array}           the matched content
    */
   feed(string) {
-    for(let i = 0; i < string.length; i++) {
-      while(this.token.match(string.charAt(i))) i++;
+    for(let j, i = 0; i < string.length; i++) {
+      j = i;
+      while(this.match(string.charAt(i))) i++;
       if(this.token.matched) {
-        i--;
-        this.next();
+        i -= 1;
       }
-      else {
-        this.flushTokens()
+      else if(!this.matched) {
+        this.reset();
       }
     }
 
